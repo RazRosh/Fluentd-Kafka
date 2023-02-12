@@ -36,3 +36,4 @@ services:
       - "kafka"
     volumes:
       - ./fluentd/conf:/fluentd/etc
+      #

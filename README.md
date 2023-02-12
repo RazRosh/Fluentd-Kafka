@@ -17,7 +17,7 @@ Change to the repository directory: cd Fluentd-Kafka.
 Build the custom Fluentd Docker image:
 
 ```
-docker build -t custom-fluentd:v1.0 .
+docker build -t fluentd-kafka:v1.0 .
 ```
 
 Start the Docker Compose environment:

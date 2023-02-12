@@ -28,7 +28,6 @@ services:
   
   fluent:
     image: fluentd-kafka:v1.0
-    user: fluent
     restart: "no"
     ports:
       - "5140:5140/udp"

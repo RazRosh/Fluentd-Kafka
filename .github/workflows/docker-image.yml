@@ -40,4 +40,5 @@ jobs:
         echo $KAFDROP_IP
         logger -n $KAFDROP_IP -P 5140 -d "$MESSAGE"
         docker ps
+        wget "http://"+$KAFDROP_IP+":9000/topic/messages/messages?partition=0&offset=0&count=100&keyFormat=DEFAULT&format=DEFAULT"
         python .github/workflows/test-scripts/test-message.py $MESSAGE $KAFDROP_IP

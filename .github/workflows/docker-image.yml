@@ -40,4 +40,4 @@ jobs:
         echo $KAFDROP_IP
         logger -n $KAFDROP_IP -P 5140 -d "$MESSAGE"
         docker ps
-        python .github/workflows/test-scripts/test-message.py $MESSAGE $(hostname)
+        python .github/workflows/test-scripts/test-message.py $MESSAGE $KAFDROP_IP

@@ -39,4 +39,5 @@ jobs:
         export KAFDROP_IP=$(docker inspect -f '{{range.NetworkSettings.Networks}}{{.IPAddress}}{{end}}' fluentd-kafka_kafdrop_1)
         echo $KAFDROP_IP
         logger -n $KAFDROP_IP -P 5140 -d "$MESSAGE"
-        #python .github/workflows/test-scripts/test-message.py $MESSAGE $(hostname)
+        docker ps
+        python .github/workflows/test-scripts/test-message.py $MESSAGE $(hostname)

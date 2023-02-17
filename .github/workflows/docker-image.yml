@@ -1,0 +1,43 @@
+name: Docker Image CI
+
+on:
+  push:
+    branches: [ "dev" ]
+  pull_request:
+    branches: [ "dev" ]
+
+jobs:
+
+  build:
+
+    runs-on: ubuntu-latest
+
+    steps:
+    - uses: actions/checkout@v3
+    - name: Build the Docker image
+      run: docker build . --file Dockerfile --tag fluentd-kafka:v1.0
+    - name: Run docker-compose
+      run: docker-compose up -d
+
+    - name: checkout repo content
+      uses: actions/checkout@v2 # checkout the repository content
+
+    - name: setup python
+      uses: actions/setup-python@v4.5.0
+      with:
+        python-version: '3.10' # install the python version needed
+
+    - name: install python packages
+      run: |
+        python -m pip install --upgrade pip
+        pip install -r .github/workflows/test-scripts/requirements.txt
+
+    - name: test message
+      run: |
+        export MESSAGE=$(python .github/workflows/test-scripts/random-message.py)
+        get="wget --server-response http://localhost:9000/topic/messages/messages?partition=0&offset=0&count=100&keyFormat=DEFAULT&format=DEFAULT 2>&1 | awk '/^  HTTP/{print $2}'"
+        eval "$get"
+        echo $(eval "$get")
+        response=0; while  [ $response != 200 ]; do response=$(eval "$get"); sleep 5; done
+        logger -n localhost -P 5140 -d "$MESSAGE"
+        python .github/workflows/test-scripts/test-message.py $MESSAGE "localhost"

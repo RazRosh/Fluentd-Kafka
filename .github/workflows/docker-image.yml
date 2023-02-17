@@ -36,7 +36,7 @@ jobs:
       run: |
         export MESSAGE=$(python .github/workflows/test-scripts/random-message.py)
         logger -n localhost -P 5140 -d "$MESSAGE"
-        get = "wget --server-response http://localhost:9000/topic/messages/messages?partition=0&offset=0&count=100&keyFormat=DEFAULT&format=DEFAULT 2>&1 | awk '/^  HTTP/{print $2}"
-        eval = "$get"
+        get="wget --server-response http://localhost:9000/topic/messages/messages?partition=0&offset=0&count=100&keyFormat=DEFAULT&format=DEFAULT 2>&1 | awk '/^  HTTP/{print $2}"
+        eval "$get"
         response=0; while  [ $response != 200 ]; do response=$("$get"); done
         python .github/workflows/test-scripts/test-message.py $MESSAGE "localhost"

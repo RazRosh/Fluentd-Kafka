@@ -22,6 +22,6 @@ for i in r.text.split('{'):
         counter+=1
 
 if counter == 1:
-    print(1)
+    print("Found test message")
 else:
-    print(0)
+    raise ValueError("Can't find test message")
